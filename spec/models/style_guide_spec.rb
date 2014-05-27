@@ -5,6 +5,21 @@ require 'app/models/style_guide'
 
 describe StyleGuide, '#violations' do
   context 'with default configuration' do
+    describe 'for space or indentation bug' do
+      it 'returns no violations' do
+        expect(violations_in(<<-CODE)).to be_empty
+display_time = if call.local_call_time
+  call.local_call_time + (call.local_call_time.utc_offset).abs.seconds
+else
+  ServiceLocationCallData.shop_time(
+    blahh,
+    blahh
+  )
+end
+        CODE
+      end
+    end
+
     describe 'for private prefix' do
       it 'returns no violations' do
         expect(violations_in(<<-CODE)).to eq []
