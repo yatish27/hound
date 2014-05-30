@@ -1,4 +1,4 @@
-App.directive 'repo', ->
+App.directive 'repo', ['$modal', ($modal) ->
   scope: true
 
   templateUrl: '/templates/repo'
@@ -8,6 +8,13 @@ App.directive 'repo', ->
     scope.processing = false
 
     activate = ->
+      if repo.private
+        $modal.open(
+          templateUrl: '/templates/payment_modal'
+          controller: 'PaymentModal'
+          scope: scope
+        )
+
       repo.$activate()
         .then(-> scope.processing = false)
         .catch(-> alert('Your repo failed to activate.'))
@@ -24,3 +31,4 @@ App.directive 'repo', ->
         deactivate(repo)
       else
         activate(repo)
+]

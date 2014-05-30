@@ -12,6 +12,7 @@ Houndapp::Application.routes.draw do
     resource :deactivation, only: [:create]
   end
   resources :repo_syncs, only: [:index, :create]
+  resources :subscriptions, only: [:create]
   resource :user, only: [:show]
 
   root to: 'home#index'

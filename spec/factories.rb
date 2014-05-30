@@ -19,6 +19,10 @@ FactoryGirl.define do
       active false
     end
 
+    trait :private do
+      private true
+    end
+
     after(:create) do |repo|
       if repo.users.empty?
         repo.users << create(:user)

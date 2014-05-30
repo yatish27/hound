@@ -1,0 +1,26 @@
+Would you like to active Hound for {{ repo.full_github_name }}?
+
+If you do it will cost ${{ monthlyCost }} per month.
+
+%form( ng-submit="processPayment()" ng-controller="PaymentModal" )
+  %fieldset
+    %label( for="paymentNumber" )
+      Card number
+    %input( type="text" id="paymentNumber" data-placeholder="Card number" autocompletetype="cc-number" required value=4242424242424242 ng-model="paymentNumber" )
+
+    %label( for="paymentExpiryMonth" )
+      Expiration Month
+    %input( type="text" id="paymentExpiryMonth" placeholder="MM" maxlength="2" required value=01 ng-model="paymentExpiryMonth" )
+
+    %label( for="paymentExpiryYear" )
+      Expiration Year
+    %input( type="text" id="paymentExpiryYear" placeholder="YYYY" maxlength="4" required value=2018 ng-model="paymentExpiryYear" )
+
+    %label( for="paymentCVC" )
+      Card code
+    %input( type="text" id="paymentCVC" placeholder="CVC" autocompletetype="cc-csc" maxlength="4" autocomplete="off" required value=123 ng-model="paymentCVC" )
+
+    %button( type="submit" )
+      Pay me!
+
+  = link_to 'Cancel', ''

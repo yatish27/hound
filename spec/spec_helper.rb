@@ -10,6 +10,7 @@ RSpec.configure do |config|
   config.include Features, type: :feature
   config.include HttpsHelper
   config.include OauthHelper
+  config.include StripeHelper
   config.include FactoryGirl::Syntax::Methods
   DatabaseCleaner.strategy = :deletion
   Resque.inline = true
