@@ -29,5 +29,31 @@ describe ReposController do
         expect(JobQueue).not_to have_received(:push)
       end
     end
+
+    context 'when current user is a member of a repo with missing information' do
+      it 'clears all memberships to allow for a forced reload' do
+        user = create(:user, :with_email)
+        repo = create(:repo, in_organization: nil, private: nil)
+        user.repos << repo
+        stub_sign_in(user)
+
+        get :index, format: :json
+
+        expect(user).to have(0).repos
+      end
+    end
+
+    context 'when current user is a member of a repo with no missing information' do
+      it 'clears all memberships to allow for a forced reload' do
+        user = create(:user, :with_email)
+        repo = create(:repo, in_organization: true, private: true)
+        user.repos << repo
+        stub_sign_in(user)
+
+        get :index, format: :json
+
+        expect(user).to have(1).repo
+      end
+    end
   end
 end

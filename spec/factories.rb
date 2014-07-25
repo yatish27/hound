@@ -28,6 +28,10 @@ FactoryGirl.define do
 
   factory :user do
     sequence(:github_username) { |n| "github#{n}" }
+
+    trait :with_email do
+      sequence(:email_address) { |n| "jimtom+#{n}@example.com" }
+    end
   end
 
   factory :membership do

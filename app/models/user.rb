@@ -21,6 +21,10 @@ class User < ActiveRecord::Base
     repos.create(attributes)
   end
 
+  def has_repos_with_missing_information?
+    repos.where('in_organization IS NULL OR private IS NULL').count > 0
+  end
+
   private
 
   def generate_remember_token
