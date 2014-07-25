@@ -113,8 +113,15 @@
   li.repo {
     @include clearfix;
     border-top: 1px solid $base-border-color;
-    padding: 1.1em 1.9em 1em;
     position: relative;
+
+    .repo-info, .credit-card-info {
+      padding: 1.1em 1.9em 1em;
+    }
+
+    .repo-info {
+      box-shadow: 0 1px 0 0 $base-border-color;
+    }
 
     @include media($small-screen) {
       padding: 1.1em 1em 1em;
@@ -145,9 +152,17 @@
       font-size: 1.4em;
       font-weight: 300;
       text-overflow: ellipsis;
-      margin-right: 3em;
       overflow: hidden;
       position: relative;
+      padding-left: 1em;
+
+      &.private:before {
+        @include position(absolute, .25em 0 0 0px);
+        content: $icon-lock;
+        font-family: $icon-font;
+        font-size: .8em;
+        opacity: .5;
+      }
     }
 
     .toggle {

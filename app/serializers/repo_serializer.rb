@@ -6,6 +6,7 @@ class RepoSerializer < ActiveModel::Serializer
     :full_github_name,
     :private,
     :in_organization,
-    :price
+    :price,
+    :plan
   )
 end
