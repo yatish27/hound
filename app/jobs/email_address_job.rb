@@ -1,7 +1,7 @@
 class EmailAddressJob
   extend Retryable
 
-  @queue = :low
+  @queue = :high
 
   def self.perform(user_id, github_token)
     user = User.find(user_id)
