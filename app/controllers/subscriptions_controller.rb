@@ -1,43 +1,22 @@
 class SubscriptionsController < ApplicationController
   def create
-    subscription = find_subscription
+    stripe_subscription = stripe_customer.subscriptions.create(plan: repo.plan)
 
-    if subscription
-      subscription.quantity = subscription.quantity + 1
-      subscription.save
-    else
-      create_subscription
-    end
+    repo.create_subscription(
+      user_id: current_user.id,
+      stripe_subscription_id: stripe_subscription.id
+    )
 
     head 201
   end
 
   private
 
-  def find_subscription
-    subscription = repo.subscription
-
-    if subscription && subscription.stripe_subscription_id
-      customer.subscriptions.retrieve(subscription.stripe_subscription_id)
-    end
+  def stripe_customer
+    find_stripe_customer || create_stripe_customer
   end
 
-  def create_subscription
-    subscription = customer.subscriptions.create(plan: repo.plan)
-
-    repo.create_subscription(
-      user_id: current_user.id,
-      stripe_subscription_id: subscription.id
-    )
-
-    subscription
-  end
-
-  def customer
-    find_customer || create_customer
-  end
-
-  def find_customer
+  def find_stripe_customer
     customer_id = current_user.stripe_customer_id
 
     if customer_id.present?
@@ -45,8 +24,8 @@ class SubscriptionsController < ApplicationController
     end
   end
 
-  def create_customer
-    customer = Stripe::Customer.create(
+  def create_stripe_customer
+    stripe_customer = Stripe::Customer.create(
       email: current_user.email_address,
       metadata: {
         user_id: current_user.id
@@ -54,9 +33,9 @@ class SubscriptionsController < ApplicationController
       card: params[:card_token]
     )
 
-    current_user.update_attribute(:stripe_customer_id, customer.id)
+    current_user.update_attribute(:stripe_customer_id, stripe_customer.id)
 
-    customer
+    stripe_customer
   end
 
   def repo

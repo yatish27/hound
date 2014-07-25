@@ -19,8 +19,8 @@ class Repo < ActiveRecord::Base
   end
 
   def plan
-    if private
-      if in_organization
+    if private?
+      if in_organization?
         'organization'
       else
         'personal'
