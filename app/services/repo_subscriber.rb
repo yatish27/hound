@@ -1,0 +1,53 @@
+class RepoSubscriber
+  def self.subscribe(repo, user, card_token)
+    new(repo, user, card_token).subscribe
+  end
+
+  def initialize(repo, user, card_token)
+    @repo = repo
+    @user = user
+    @card_token = card_token
+  end
+
+  def subscribe
+    stripe_subscription = stripe_customer.subscriptions.create(plan: repo.plan)
+
+    repo.create_subscription!(
+      user_id: user.id,
+      stripe_subscription_id: stripe_subscription.id
+    )
+  rescue
+    stripe_subscription.try(:delete)
+    nil
+  end
+
+  protected
+
+  attr_reader :repo, :user, :card_token
+
+  private
+
+  def stripe_customer
+    find_stripe_customer || create_stripe_customer
+  end
+
+  def find_stripe_customer
+    customer_id = user.stripe_customer_id
+
+    if customer_id.present?
+      Stripe::Customer.retrieve(customer_id)
+    end
+  end
+
+  def create_stripe_customer
+    stripe_customer = Stripe::Customer.create(
+      email: user.email_address,
+      metadata: { user_id: user.id },
+      card: card_token
+    )
+
+    user.update_attribute(:stripe_customer_id, stripe_customer.id)
+
+    stripe_customer
+  end
+end

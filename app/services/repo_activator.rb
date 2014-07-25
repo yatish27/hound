@@ -7,6 +7,7 @@ class RepoActivator
   end
 
   def deactivate(repo, github_token)
+    # Need to cancel subscription
     change_repository_state_quietly do
       github = GithubApi.new(github_token)
       github.remove_hook(repo.full_github_name, repo.hook_id)
