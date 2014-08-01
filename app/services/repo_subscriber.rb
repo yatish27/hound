@@ -16,6 +16,10 @@ class RepoSubscriber
   def subscribe
     stripe_subscription = stripe_customer.subscriptions.create(plan: repo.plan)
 
+    puts "Was the Stripe subscription created? #{stripe_subscription}"
+    puts "Creating Repo subscription..."
+
+    # fails if repo_id already is used for a subscription
     repo.create_subscription!(
       user_id: user.id,
       stripe_subscription_id: stripe_subscription.id
@@ -57,8 +61,14 @@ class RepoSubscriber
   def find_stripe_customer
     customer_id = user.stripe_customer_id
 
+    puts "Does user have a stripe_customer_id? #{customer_id}"
+
     if customer_id.present?
-      Stripe::Customer.retrieve(customer_id)
+      stripe_customer = Stripe::Customer.retrieve(customer_id)
+
+      puts "Was Stripe customer found? #{stripe_customer}"
+
+      stripe_customer
     end
   end
 
@@ -68,6 +78,7 @@ class RepoSubscriber
       metadata: { user_id: user.id },
       card: card_token
     )
+    debugger
 
     user.update_attribute(:stripe_customer_id, stripe_customer.id)
 

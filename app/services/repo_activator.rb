@@ -2,6 +2,8 @@ class RepoActivator
   def activate(repo, github_token)
     change_repository_state_quietly do
       github = GithubApi.new(github_token)
+      # create_web_hook(github, repo) returns nil if hook already exists
+      # WTF!!
       add_hound_to_repo(github, repo) && create_web_hook(github, repo)
     end
   end
@@ -24,16 +26,24 @@ class RepoActivator
   end
 
   def create_web_hook(github, repo)
-    github.create_hook(repo.full_github_name, builds_url) do |hook|
+    result = github.create_hook(repo.full_github_name, builds_url) do |hook|
       repo.update_attributes(hook_id: hook.id, active: true)
     end
+
+    puts "Was the hook created? #{result}"
+
+    result
   end
 
   def add_hound_to_repo(github, repo)
-    github.add_user_to_repo(
+    result = github.add_user_to_repo(
       ENV['HOUND_GITHUB_USERNAME'],
       repo.full_github_name
     )
+
+    puts "Was Hound added to repo? #{result}"
+
+    result
   end
 
   def builds_url

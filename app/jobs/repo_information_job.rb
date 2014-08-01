@@ -1,3 +1,4 @@
+# Not used anymore?
 class RepoInformationJob
   extend Retryable
 
