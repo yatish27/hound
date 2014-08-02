@@ -1,6 +1,4 @@
 class PullRequest
-  CONFIG_FILE = '.hound.yml'
-
   def initialize(payload, github_token)
     @payload = payload
     @github_token = github_token
@@ -32,7 +30,7 @@ class PullRequest
   end
 
   def config
-    head_commit.file_content(CONFIG_FILE)
+    CommitConfig.new(head_commit).to_hash
   end
 
   def opened?

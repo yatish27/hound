@@ -362,11 +362,7 @@ a = { one: 1}
 
   context 'with custom configuration' do
     it 'finds only one violation' do
-      config = <<-TEXT.strip_heredoc
-        StringLiterals:
-          EnforcedStyle: double_quotes
-          Enabled: true
-      TEXT
+      config = { "StringLiterals" => { "EnforcedStyle" => "double_quotes" } }
 
       violations = violations_with_config(config)
 
@@ -376,9 +372,7 @@ a = { one: 1}
     end
 
     it "can use custom configuration to show rubocop cop names" do
-      config = <<-TEXT.strip_heredoc
-        ShowCopNames: true
-      TEXT
+      config = { "ShowCopNames" => true }
 
       violations = violations_with_config(config)
 
@@ -390,13 +384,10 @@ a = { one: 1}
 
     context 'with old-style syntax' do
       it 'has one violation' do
-        config = <<-TEXT.strip_heredoc
-          StringLiterals:
-            EnforcedStyle: single_quotes
-
-          DefWithParentheses:
-            Enabled: false
-        TEXT
+        config = {
+          "StringLiterals" => { "EnforcedStyle" => "single_quotes" },
+          "DefWithParentheses" => { "Enabled" => false },
+        }
 
         violations = violations_with_config(config)
 
@@ -409,11 +400,7 @@ a = { one: 1}
 
     context 'with excluded files' do
       it 'has no violations' do
-        config = <<-TEXT.strip_heredoc
-          AllCops:
-            Exclude:
-              - lib/test.rb
-        TEXT
+        config = { "AllCops" => { "Exclude" => ["lib/test.rb"] } }
 
         violations = violations_with_config(config)
 
@@ -427,7 +414,7 @@ a = { one: 1}
           "hello world"
         end
       TEXT
-      config << "\nStyle/EndOfLine:\n  Enabled: false"
+      config.merge!("Style/EndOfLine" => { "Enabled" => false })
 
       style_guide = StyleGuide.new(config)
       violations = style_guide.violations(build_file(content))
@@ -438,10 +425,7 @@ a = { one: 1}
   private
 
   def violations_in(content)
-    config = <<-YAML.strip_heredoc
-      Style/EndOfLine:
-        Enabled: false
-    YAML
+    config = { "Style/EndOfLine" => { "Enabled" => false } }
     unless content.end_with?("\n")
       content += "\n"
     end

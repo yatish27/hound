@@ -1,6 +1,6 @@
 class StyleGuide
-  def initialize(override_config_content = nil)
-    @override_config_content = override_config_content
+  def initialize(override_config = nil)
+    @override_config = override_config
   end
 
   def violations(file)
@@ -46,9 +46,8 @@ class StyleGuide
   end
 
   def override_config
-    if @override_config_content
-      config_content = YAML.load(@override_config_content)
-      override_config = RuboCop::Config.new(config_content, "")
+    if @override_config
+      override_config = RuboCop::Config.new(@override_config, "")
       override_config.add_missing_namespaces
       override_config.make_excludes_absolute
       override_config
