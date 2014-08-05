@@ -20,7 +20,7 @@ App.directive 'repo', ['Subscription', (Subscription) ->
         .then(-> scope.processing = false)
         .catch(-> alert('Your repo failed to deactivate.'))
 
-    createSubscription = (cardToken = nil) ->
+    createSubscription = (cardToken = null) ->
       subscription = new Subscription(
         repo_id: repo.id
         card_token: cardToken
