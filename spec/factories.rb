@@ -10,6 +10,8 @@ FactoryGirl.define do
   factory :repo do
     sequence(:full_github_name) { |n| "user/repo#{n}" }
     sequence(:github_id) { |n| n }
+    private false
+    in_organization false
 
     trait :active do
       active true
@@ -37,5 +39,11 @@ FactoryGirl.define do
   factory :membership do
     user
     repo
+  end
+
+  factory :subscription do
+    user
+    repo
+    sequence(:stripe_subscription_id) { |n| "stripesubscription#{n}" }
   end
 end

@@ -2,7 +2,6 @@ require 'spec_helper'
 
 feature 'Subscription', js: true do
   STRIPE_CUSTOMER_ID = 'cus_2e3fqARc1uHtCv'
-  # STRIPE_SUBSCRIPTION_ID = 'sub_488ZZngNkyRMiR'
 
   scenario 'user successfully activates a private repo' do
     user = create(:user)
@@ -12,8 +11,6 @@ feature 'Subscription', js: true do
 
     stub_customer_create_request(user)
     stub_subscription_create_request
-
-    stub_stripe
 
     sign_in_as(user)
     find('li.repo .toggle').click
@@ -43,7 +40,11 @@ feature 'Subscription', js: true do
       :post,
       'https://api.stripe.com/v1/customers'
     ).with(
-      body: { "card" => "cardtoken", "metadata" => { "user_id"=>"#{user.id}" } },
+      body: {
+        "email" => user.email_address,
+        "card" => "123",
+        "metadata" => { "user_id" => user.id.to_s }
+      },
       headers: { 'Authorization' => "Bearer #{ENV['STRIPE_API_KEY']}" }
     ).to_return(
       status: 200,
@@ -57,7 +58,7 @@ feature 'Subscription', js: true do
       :post,
       "https://api.stripe.com/v1/customers/#{STRIPE_CUSTOMER_ID}/subscriptions"
     ).with(
-      body: { 'plan' => 'free' },
+      body: { 'plan' => 'organization' },
       headers: { 'Authorization' => "Bearer #{ENV['STRIPE_API_KEY']}",}
     ).to_return(
       status: 200,

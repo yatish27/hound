@@ -3,6 +3,10 @@ class RepoSubscriber
     new(repo, user, card_token).subscribe
   end
 
+  def self.unsubscribe(repo, user)
+    new(repo, user, nil).unsubscribe
+  end
+
   def initialize(repo, user, card_token)
     @repo = repo
     @user = user
@@ -16,8 +20,20 @@ class RepoSubscriber
       user_id: user.id,
       stripe_subscription_id: stripe_subscription.id
     )
-  rescue
+  rescue => error
+    Raven.capture_exception(error)
     stripe_subscription.try(:delete)
+    nil
+  end
+
+  def unsubscribe
+    stripe_subscription = stripe_customer.subscriptions.retrieve(
+      repo.subscription.stripe_subscription_id
+    )
+    stripe_subscription.delete
+    repo.subscription.destroy!
+  rescue => error
+    Raven.capture_exception(error)
     nil
   end
 

@@ -3,7 +3,7 @@ window.Stripe = {
     createToken: function(creditCard, handler) {
       function isValidCardNumber(number) {
         var validCardNumbers = ['4242424242424242', '4242 4242 4242 4242'];
-        return $.inArray(number, validCardNumbers) >= 0;
+        return validCardNumbers.indexOf(number) >= 0;
       }
 
       if (isValidCardNumber(creditCard.number)) {
@@ -28,9 +28,9 @@ window.Stripe = {
       }
     }
   },
-  // cardType: function(value) { return 'Visa' },
+  cardType: function(value) { return 'Visa' },
   setPublishableKey: function() {}
-  // validateCardNumber: function(value) { return true; },
-  // validateCVC: function(value) { return true; },
-  // validateExpiry: function(value) { return true; }
+  validateCardNumber: function(value) { return true; },
+  validateCVC: function(value) { return true; },
+  validateExpiry: function(value) { return true; }
 };

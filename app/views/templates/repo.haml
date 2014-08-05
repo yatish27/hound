@@ -17,4 +17,5 @@
     = label_tag :cvc, 'CVC'
     = text_field_tag :cvc, nil, 'ng-model' => 'cvc'
 
-    = button_tag 'Subscribe', 'ng-click' => 'subscribe()'
+    = button_tag 'Subscribe', 'ng-click' => 'subscribeWithCard()'
+    = button_tag 'Subscribe with existing card', 'ng-click' => 'subscribeWithoutCard()'

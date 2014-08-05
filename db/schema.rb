@@ -71,7 +71,7 @@ ActiveRecord::Schema.define(version: 20140711223957) do
     t.datetime "updated_at"
     t.integer  "user_id",                null: false
     t.integer  "repo_id",                null: false
-    t.string   "stripe_subscription_id"
+    t.string   "stripe_subscription_id", null: false
   end
 
   add_index "subscriptions", ["repo_id"], name: "index_subscriptions_on_repo_id", unique: true, using: :btree

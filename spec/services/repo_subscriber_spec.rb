@@ -82,6 +82,44 @@ describe RepoSubscriber do
     end
   end
 
+  describe ".unsubscribe" do
+    it "deletes Stripe subscription" do
+      user = create(:user, stripe_customer_id: STRIPE_CUSTOMER_ID)
+      subscription = create(
+        :subscription,
+        stripe_subscription_id: STRIPE_SUBSCRIPTION_ID,
+        user: user
+      )
+      user.repos << subscription.repo
+      stub_customer_find_request
+      stub_subscription_find_request(subscription)
+      stripe_delete_request = stub_subscription_delete_request
+
+      RepoSubscriber.unsubscribe(subscription.repo, user)
+
+      expect(stripe_delete_request).to have_been_requested
+    end
+
+    it "deletes repo subscription" do
+      user = create(:user, stripe_customer_id: STRIPE_CUSTOMER_ID)
+      subscription = create(
+        :subscription,
+        stripe_subscription_id: STRIPE_SUBSCRIPTION_ID,
+        user: user
+      )
+      user.repos << subscription.repo
+      stub_customer_find_request
+      stub_subscription_find_request(subscription)
+      stripe_delete_request = stub_subscription_delete_request
+
+      RepoSubscriber.unsubscribe(subscription.repo, user)
+
+      expect { subscription.reload }.to raise_error(
+        ActiveRecord::RecordNotFound
+      )
+    end
+  end
+
   def stub_customer_create_request(user)
     stub_request(
       :post,
@@ -120,6 +158,18 @@ describe RepoSubscriber do
     )
   end
 
+  def stub_subscription_find_request(subscription)
+    stub_request(
+      :get,
+      "https://api.stripe.com/v1/customers/#{STRIPE_CUSTOMER_ID}/subscriptions/#{subscription.stripe_subscription_id}"
+    ).with(
+      headers: { "Authorization" => "Bearer #{ENV["STRIPE_API_KEY"]}",}
+    ).to_return(
+      status: 200,
+      body: File.read("spec/support/fixtures/stripe_subscription_find.json"),
+    )
+  end
+
   def stub_subscription_delete_request
     stub_request(
       :delete,
@@ -128,7 +178,7 @@ describe RepoSubscriber do
       headers: { "Authorization" => "Bearer #{ENV["STRIPE_API_KEY"]}",}
     ).to_return(
       status: 200,
-      body: "{}",
+      body: File.read("spec/support/fixtures/stripe_subscription_delete.json"),
     )
   end
 

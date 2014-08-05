@@ -20,23 +20,53 @@ App.directive 'repo', ['Subscription', (Subscription) ->
         .then(-> scope.processing = false)
         .catch(-> alert('Your repo failed to deactivate.'))
 
+    createSubscription = (cardToken = nil) ->
+      subscription = new Subscription(
+        repo_id: repo.id
+        card_token: cardToken
+      )
+      subscription.$save().then(->
+        scope.processing = false
+        scope.paying = false
+        repo.active = true
+      , ->
+        alert('Your subscription failed')
+
+        scope.processing = false
+        scope.paying = false
+      )
+
     scope.showPaymentForm = ->
       repo.private && scope.paying
 
     scope.toggle = ->
       if repo.active
-        # Need to cancel subscription
-        scope.processing = true
-        deactivate(repo)
-      else
-        # There's a chance we won't know the repo info, get it
         if repo.private
+          scope.processing = true
+          subscription = new Subscription(repo_id: repo.id)
+          subscription.$delete().then(->
+            repo.active = false
+            scope.processing = false
+          , ->
+            alert('Your repo could not be disabled')
+            scope.processing = false
+          )
+        else
+          scope.processing = true
+          deactivate(repo)
+      else
+        if repo.private
+          scope.processing = true
           scope.paying = true
         else
           scope.processing = true
           activate(repo)
 
-    scope.subscribe = ->
+    scope.subscribeWithoutCard = ->
+      event.preventDefault()
+      createSubscription()
+
+    scope.subscribeWithCard = ->
       event.preventDefault()
 
       Stripe.card.createToken(
@@ -46,16 +76,8 @@ App.directive 'repo', ['Subscription', (Subscription) ->
         cvc: scope.cvc
       , (status, response) ->
         if response.error
-          alert('ahhhhh')
+          alert('Your card is invalid')
         else
-          subscription = new Subscription(
-            repo_id: repo.id
-            card_token: response.id
-          )
-          subscription.$save().then(->
-            activate(repo)
-          , ->
-            alert('ahhhhh')
-          )
+          createSubscription(response.id)
       )
 ]
