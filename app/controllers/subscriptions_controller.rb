@@ -8,7 +8,7 @@ class SubscriptionsController < ApplicationController
       render json: repo, status: :created
     else
       activator.deactivate(repo, github_token)
-      report_activation_error('Failed to subscribe and activate repo')
+      report_activation_error("Failed to subscribe and activate repo")
       head 502
     end
   end
@@ -19,7 +19,7 @@ class SubscriptionsController < ApplicationController
     if activator.deactivate(repo, session[:github_token]) && delete_subscription
       render json: repo, status: :created
     else
-      report_activation_error('Failed to unsubscribe and deactivate repo')
+      report_activation_error("Failed to unsubscribe and deactivate repo")
       head 502
     end
   end

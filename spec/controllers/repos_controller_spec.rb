@@ -1,9 +1,9 @@
-require 'spec_helper'
+require "spec_helper"
 
 describe ReposController do
-  describe '#index' do
-    context 'when current user does not have an email address saved' do
-      it 'pushes an email address job onto queue' do
+  describe "#index" do
+    context "when current user does not have an email address saved" do
+      it "pushes an email address job onto queue" do
         user = create(:user, email_address: nil)
         stub_sign_in(user)
         JobQueue.stub(:push)
@@ -18,9 +18,9 @@ describe ReposController do
       end
     end
 
-    context 'when current user has an email address saved' do
-      it 'does not push an email address job onto queue' do
-        user = create(:user, email_address: 'test@example.com')
+    context "when current user has an email address saved" do
+      it "does not push an email address job onto queue" do
+        user = create(:user, email_address: "test@example.com")
         stub_sign_in(user)
         JobQueue.stub(:push)
 
@@ -30,8 +30,8 @@ describe ReposController do
       end
     end
 
-    context 'when current user is a member of a repo with missing information' do
-      it 'clears all memberships to allow for a forced reload' do
+    context "when current user is a member of a repo with missing information" do
+      it "clears all memberships to allow for a forced reload" do
         user = create(:user, :with_email)
         repo = create(:repo, in_organization: nil, private: nil)
         user.repos << repo
@@ -43,8 +43,8 @@ describe ReposController do
       end
     end
 
-    context 'when current user is a member of a repo with no missing information' do
-      it 'clears all memberships to allow for a forced reload' do
+    context "when current user is a member of a repo with no missing information" do
+      it "clears all memberships to allow for a forced reload" do
         user = create(:user, :with_email)
         repo = create(:repo, in_organization: true, private: true)
         user.repos << repo
