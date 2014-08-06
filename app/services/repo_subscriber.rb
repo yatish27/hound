@@ -21,7 +21,7 @@ class RepoSubscriber
       stripe_subscription_id: stripe_subscription.id
     )
   rescue => error
-    Raven.capture_exception(error)
+    report_exception(error)
     stripe_subscription.try(:delete)
     nil
   end
@@ -33,7 +33,7 @@ class RepoSubscriber
     stripe_subscription.delete
     repo.subscription.destroy!
   rescue => error
-    Raven.capture_exception(error)
+    report_exception(error)
     nil
   end
 
@@ -42,6 +42,13 @@ class RepoSubscriber
   attr_reader :repo, :user, :card_token
 
   private
+
+  def report_exception(error)
+    Raven.capture_exception(
+      error,
+      extra: { user_id: user.id, repo_id: repo.id }
+    )
+  end
 
   def stripe_customer
     find_stripe_customer || create_stripe_customer

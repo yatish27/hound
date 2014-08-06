@@ -45,7 +45,7 @@ describe ActivationsController, '#create' do
 
       expect(Raven).to have_received(:capture_exception).with(
         ActivationsController::FailedToActivate.new('Failed to activate repo'),
-        extra: { repo_id: repo.id.to_s }
+        extra: { user_id: membership.user.id, repo_id: repo.id.to_s }
       )
     end
   end

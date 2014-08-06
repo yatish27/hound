@@ -12,7 +12,7 @@ class ActivationsController < ApplicationController
     else
       report_exception(
         FailedToActivate.new('Failed to activate repo'),
-        repo_id: params[:repo_id]
+        user_id: current_user.id, repo_id: params[:repo_id]
       )
       head 502
     end

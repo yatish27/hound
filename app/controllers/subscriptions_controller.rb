@@ -7,15 +7,8 @@ class SubscriptionsController < ApplicationController
     if activator.activate(repo, github_token) && create_subscription
       render json: repo, status: :created
     else
-      puts "Subscription was not created. Deactivating repo..."
-
       activator.deactivate(repo, github_token)
-
-      # send more info to Sentry!!!
-      report_exception(
-        FailedToActivate.new('Failed to subscribe and activate repo'),
-        repo_id: params[:repo_id]
-      )
+      report_activation_error('Failed to subscribe and activate repo')
       head 502
     end
   end
@@ -26,15 +19,19 @@ class SubscriptionsController < ApplicationController
     if activator.deactivate(repo, session[:github_token]) && delete_subscription
       render json: repo, status: :created
     else
-      report_exception(
-        FailedToActivate.new('Failed to unsubscribe and deactivate repo'),
-        repo_id: params[:repo_id]
-      )
+      report_activation_error('Failed to unsubscribe and deactivate repo')
       head 502
     end
   end
 
   private
+
+  def report_activation_error(message)
+    report_exception(
+      FailedToActivate.new(message),
+      user_id: current_user.id, repo_id: params[:repo_id]
+    )
+  end
 
   def repo
     @repo ||= current_user.repos.find(params[:repo_id])

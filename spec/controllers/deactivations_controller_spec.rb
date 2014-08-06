@@ -51,7 +51,7 @@ describe DeactivationsController, '#create' do
         DeactivationsController::FailedToActivate.new(
           'Failed to deactivate repo'
         ),
-        extra: { repo_id: repo.id.to_s }
+        extra: { user_id: membership.user.id, repo_id: repo.id.to_s }
       )
     end
   end
