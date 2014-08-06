@@ -56,7 +56,6 @@ App.directive 'repo', ['Subscription', (Subscription) ->
           deactivate(repo)
       else
         if repo.private
-          scope.processing = true
           scope.paying = true
         else
           scope.processing = true
@@ -64,10 +63,12 @@ App.directive 'repo', ['Subscription', (Subscription) ->
 
     scope.subscribeWithoutCard = ->
       event.preventDefault()
+      scope.processing = true
       createSubscription()
 
     scope.subscribeWithCard = ->
       event.preventDefault()
+      scope.processing = true
 
       Stripe.card.createToken(
         number: scope.cardNumber
