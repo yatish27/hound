@@ -4,7 +4,7 @@ feature 'Subscription', js: true do
   STRIPE_CUSTOMER_ID = 'cus_2e3fqARc1uHtCv'
 
   scenario 'user successfully activates a private repo' do
-    user = create(:user)
+    user = create(:user, email_address: 'jimtom@example.com')
     repo = create(:repo, private: true, in_organization: true)
     repo.users << user
     stub_github_requests(repo)
@@ -40,11 +40,6 @@ feature 'Subscription', js: true do
       :post,
       'https://api.stripe.com/v1/customers'
     ).with(
-      body: {
-        "email" => user.email_address,
-        "card" => "123",
-        "metadata" => { "user_id" => user.id.to_s }
-      },
       headers: { 'Authorization' => "Bearer #{ENV['STRIPE_API_KEY']}" }
     ).to_return(
       status: 200,

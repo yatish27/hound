@@ -29,7 +29,7 @@ window.Stripe = {
     }
   },
   cardType: function(value) { return 'Visa' },
-  setPublishableKey: function() {}
+  setPublishableKey: function() {},
   validateCardNumber: function(value) { return true; },
   validateCVC: function(value) { return true; },
   validateExpiry: function(value) { return true; }
