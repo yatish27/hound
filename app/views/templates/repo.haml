@@ -4,6 +4,9 @@
   #h2
     ${{ repo.price }}
 
+  #h3{ 'ng-show' => 'errorMessage' }
+    {{ errorMessage }}
+
   = form_tag do
     = label_tag :card_number, 'Card Number'
     = text_field_tag :card_number, nil, 'ng-model' => 'cardNumber'

@@ -7,6 +7,7 @@ App.directive 'repo', ['Subscription', (Subscription) ->
     repo = scope.repo
     scope.processing = false
     scope.paying = false
+    scope.errorMessage = null
 
     activate = ->
       repo.$activate()
@@ -30,16 +31,16 @@ App.directive 'repo', ['Subscription', (Subscription) ->
         scope.paying = false
         repo.active = true
       , ->
-        alert('Your subscription failed')
-
         scope.processing = false
-        scope.paying = false
+        scope.errorMessage = 'We encountered an error processing your payment. Please try a different card.'
       )
 
     scope.showPaymentForm = ->
       repo.private && scope.paying
 
     scope.toggle = ->
+      scope.errorMessage = null
+
       if repo.active
         if repo.private
           scope.processing = true
@@ -56,6 +57,10 @@ App.directive 'repo', ['Subscription', (Subscription) ->
           deactivate(repo)
       else
         if repo.private
+          scope.cardNumber = null
+          scope.expirationMonth = null
+          scope.expirationYear = null
+          scope.cvc = null
           scope.paying = true
         else
           scope.processing = true
@@ -77,8 +82,11 @@ App.directive 'repo', ['Subscription', (Subscription) ->
         cvc: scope.cvc
       , (status, response) ->
         if response.error
-          alert('Your card is invalid')
+          scope.$apply ->
+            scope.processing = false
+            scope.errorMessage = 'We encountered an error processing your payment. Please verify your credit card details or try a different card.'
         else
-          createSubscription(response.id)
+          scope.$apply ->
+            createSubscription(response.id)
       )
 ]
