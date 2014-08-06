@@ -86,7 +86,6 @@ App.directive 'repo', ['Subscription', (Subscription) ->
             scope.processing = false
             scope.errorMessage = 'We encountered an error processing your payment. Please verify your credit card details or try a different card.'
         else
-          scope.$apply ->
-            createSubscription(response.id)
+          createSubscription(response.id)
       )
 ]
