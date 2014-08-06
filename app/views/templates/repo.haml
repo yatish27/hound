@@ -1,5 +1,5 @@
 .repo-info
-  %a.toggle{'href' => '', 'ng-click' => 'toggle()'} &nbsp;
+  %a.toggle{'href' => '', 'ng-click' => "toggle({stripeCustomerId: '#{current_user.stripe_customer_id}'})"} &nbsp;
   %span.name{'ng-class' => '{private: repo.private}'} {{ repo.full_github_name }}
 
 .payment-form{ 'ng-show' => 'showPaymentForm()' }
@@ -12,36 +12,36 @@
       {{ repo.price }}
 
   .credit-card-info
-    %dl.existing-card
+    %dl.existing-card{'ng-hide' => 'showCardForm'}
       %dt Use Card on File
       %dd
         1234
-        %a{href: '#'} (edit)
+        %a{href: '#', 'ng-click' => 'editCard()'} (edit)
 
-    = button_tag 'Subscribe', 'ng-click' => 'subscribeWithoutCard()', class: 'button'
+      %dd
+        = button_tag 'Subscribe', 'ng-click' => 'subscribeWithoutCard()', class: 'button'
 
-    -#
-      = form_tag do
-        #h3{ 'ng-show' => 'errorMessage' }
-          {{ errorMessage }}
+    %form{'ng-show' => 'showCardForm'}
+      #h3{ 'ng-show' => 'errorMessage' }
+        {{ errorMessage }}
 
-        .form-row
-          .cc-input
-            = label_tag :card_number, 'Card Number'
-            = text_field_tag :card_number, nil, 'ng-model' => 'cardNumber'
+      .form-row
+        .cc-input
+          = label_tag :card_number, 'Card Number'
+          = text_field_tag :card_number, nil, 'ng-model' => 'cardNumber'
 
-          .cvc-input
-            = label_tag :cvc, 'CVC'
-            = text_field_tag :cvc, nil, 'ng-model' => 'cvc'
+        .cvc-input
+          = label_tag :cvc, 'CVC'
+          = text_field_tag :cvc, nil, 'ng-model' => 'cvc'
 
-        .form-row
-          .exp-input
-            = label_tag :expiration_month, 'Expiration Month'
-            = text_field_tag :expiration_month, nil, 'ng-model' => 'expirationMonth'
+      .form-row
+        .exp-input
+          = label_tag :expiration_month, 'Expiration Month'
+          = text_field_tag :expiration_month, nil, 'ng-model' => 'expirationMonth'
 
-          .exp-input
-            = label_tag :expiration_year, 'Expiration Year'
-            = text_field_tag :expiration_year, nil, 'ng-model' => 'expirationYear'
+        .exp-input
+          = label_tag :expiration_year, 'Expiration Year'
+          = text_field_tag :expiration_year, nil, 'ng-model' => 'expirationYear'
 
-        .actions
-          = button_tag 'Subscribe', 'ng-click' => 'subscribeWithCard()', class: 'button'
+      .actions
+        = button_tag 'Subscribe', 'ng-click' => 'subscribeWithCard()', class: 'button'

@@ -8,6 +8,7 @@ App.directive 'repo', ['Subscription', (Subscription) ->
     scope.processing = false
     scope.paying = false
     scope.errorMessage = null
+    scope.showCardForm = true
 
     activate = ->
       repo.$activate()
@@ -38,8 +39,10 @@ App.directive 'repo', ['Subscription', (Subscription) ->
     scope.showPaymentForm = ->
       repo.private && scope.paying
 
-    scope.toggle = ->
+    scope.toggle = (options) ->
       scope.errorMessage = null
+      if options.stripeCustomerId
+        scope.showCardForm = false
 
       if repo.active
         if repo.private
@@ -88,4 +91,7 @@ App.directive 'repo', ['Subscription', (Subscription) ->
         else
           createSubscription(response.id)
       )
+
+    scope.editCard = ->
+      scope.showCardForm = true
 ]
