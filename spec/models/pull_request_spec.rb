@@ -9,7 +9,7 @@ describe PullRequest do
 
         includes_line = pull_request.head_includes?(Line.new(patch_line))
 
-        expect(includes_line).to be_true
+        expect(includes_line).to be_truthy
       end
     end
 
@@ -21,7 +21,7 @@ describe PullRequest do
 
         includes_line = pull_request.head_includes?(Line.new(patch_line2))
 
-        expect(includes_line).to be_false
+        expect(includes_line).to be_falsy
       end
     end
 
@@ -96,7 +96,7 @@ describe PullRequest do
 
       comments = pull_request.comments
 
-      expect(comments).to have(1).item
+      expect(comments.size).to eq(1)
       expect(comments).to match_array([comment])
     end
   end

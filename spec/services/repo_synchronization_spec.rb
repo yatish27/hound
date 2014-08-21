@@ -65,7 +65,7 @@ describe RepoSynchronization do
       synchronization.start
 
       expect(GithubApi).to have_received(:new).with(github_token)
-      expect(user).to have(1).repo
+      expect(user.repos.size).to eq(1)
       expect(user.repos.first.full_github_name).to eq 'user/newrepo'
       expect(user.repos.first.github_id).to eq 456
     end
@@ -117,7 +117,7 @@ describe RepoSynchronization do
 
         synchronization.start
 
-        expect(second_user.reload).to have(1).repos
+        expect(second_user.reload.repos.size).to eq(1)
       end
     end
   end

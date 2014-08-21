@@ -39,7 +39,7 @@ describe ReposController do
 
         get :index, format: :json
 
-        expect(user).to have(0).repos
+        expect(user.repos.size).to eq(0)
       end
     end
 
@@ -52,7 +52,7 @@ describe ReposController do
 
         get :index, format: :json
 
-        expect(user).to have(1).repo
+        expect(user.repos.size).to eq(1)
       end
     end
   end

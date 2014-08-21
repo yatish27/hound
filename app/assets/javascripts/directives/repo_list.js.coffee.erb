@@ -36,6 +36,10 @@ App.directive 'repoList', ['Repo', 'Sync', 'User', '$timeout', (Repo, Sync, User
       sync.$promise.then(->
         pollSyncStatus()
       , ->
+        keys = []
+        for k, v of arguments[0]
+          keys.push("#{k}: #{v}")
+        alert(keys.join(", "))
         scope.syncingRepos = false
         alert('Your repos failed to sync.')
       )

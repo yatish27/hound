@@ -9,7 +9,7 @@ describe RepoActivator do
         stub_github_api
         activator = RepoActivator.new
 
-        expect(activator.activate(repo, github_token)).to be_true
+        expect(activator.activate(repo, github_token)).to be_truthy
         expect(GithubApi).to have_received(:new).with(github_token)
         expect(repo.reload).to be_active
       end
@@ -31,7 +31,7 @@ describe RepoActivator do
 
         response = activator.activate(repo, 'githubtoken')
 
-        expect(response).to be_true
+        expect(response).to be_truthy
       end
 
       context 'when https is enabled' do
@@ -76,7 +76,7 @@ describe RepoActivator do
 
         response = activator.activate(repo, github_token)
 
-        expect(response).to be_false
+        expect(response).to be_falsy
       end
 
       it 'only swallows Octokit errors' do
@@ -96,7 +96,7 @@ describe RepoActivator do
           GithubApi.stub(new: github)
           activator = RepoActivator.new
 
-          expect(activator.activate(repo, github)).to be_false
+          expect(activator.activate(repo, github)).to be_falsy
         end
       end
     end
@@ -132,7 +132,7 @@ describe RepoActivator do
         activator.deactivate(repo, github_token)
 
         expect(GithubApi).to have_received(:new).with(github_token)
-        expect(repo.active?).to be_false
+        expect(repo.active?).to be_falsy
       end
 
       it 'removes GitHub hook' do
@@ -155,7 +155,7 @@ describe RepoActivator do
 
         response = activator.deactivate(repo, 'githubtoken')
 
-        expect(response).to be_true
+        expect(response).to be_truthy
       end
     end
 
@@ -168,7 +168,7 @@ describe RepoActivator do
 
         response = activator.deactivate(repo, github_token)
 
-        expect(response).to be_false
+        expect(response).to be_falsy
       end
 
       it 'only swallows Octokit errors' do

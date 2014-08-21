@@ -90,7 +90,7 @@ describe RepoSubscriber do
 
         result = RepoSubscriber.subscribe(repo, user, "cardtoken")
 
-        expect(result).to be_false
+        expect(result).to be_falsy
       end
     end
 
@@ -106,7 +106,7 @@ describe RepoSubscriber do
 
         result = RepoSubscriber.subscribe(repo, user, "cardtoken")
 
-        expect(result).to be_false
+        expect(result).to be_falsy
         expect(stripe_delete_request).to have_been_requested
       end
     end

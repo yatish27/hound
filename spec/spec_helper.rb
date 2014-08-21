@@ -12,7 +12,11 @@ RSpec.configure do |config|
   end
 
   config.infer_base_class_for_anonymous_controllers = false
+<<<<<<< HEAD
   config.include AnalyticsHelper
+=======
+  config.infer_spec_type_from_file_location!
+>>>>>>> Upgrade to Rails 4.1.0
   config.include AuthenticationHelper
   config.include Features, type: :feature
   config.include HttpsHelper
