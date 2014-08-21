@@ -18,8 +18,8 @@ Set Up Hound on Your Local Development Environment
 3. Under the Developer Applications panel - Click on "Register new application"
 4. Fill in the application details:
   * Application Name: Hound Development
-  * Homepage URL: http://localhost:5000
-  * Authorization Callback URL: http://localhost:5000
+  * Homepage URL: http://localhost:3000
+  * Authorization Callback URL: http://localhost:3000
 5. On the confirmation screen, copy the `Client ID` and `Client Secret` to
    `.env`. Note the setup script copies `.sample.env` to `.env` for you, if the
    file does not exist.
