@@ -9,8 +9,8 @@ Take care of pesky code reviews with a trusty [Hound](http://houndci.com).
 Hound reviews GitHub pull requests for style guide violations. [View the style
 guide &rarr;](https://github.com/thoughtbot/guides/tree/master/style)
 
-Set Up Hound Locally for Development
-------------------------------------
+Set Up Hound on Your Local Development Environment
+--------------------------------------------------
 
 1. After cloning the repo, run the setup script `./bin/setup`
 2. Log into your GitHub account and go to the [Application Settings under Account
