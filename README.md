@@ -18,20 +18,13 @@ Set Up Hound Locally for Development
 3. Under the Developer Applications panel - Click on "Register new application"
 4. Fill in the application details:
   * Application Name: Hound Development
-  * Homepage URL: http://localhost:3000
-  * Authorization Callback URL: http://localhost:3000
-5. After registering the Hound Dev application, a screen with a `Client ID` and
-   `Client Secret` token should appear.
-6. Add the `Client ID` and `Client Secret` to `.env`. Note the setup script
-   copies `.sample.env` to `.env` for you, if the file does not exist.
-
- ```bash
-  GITHUB_CLIENT_ID=#client_id_token_here
-  GITHUB_CLIENT_SECRET=#client_secret_token_here
- ```
-
-7. Run `foreman start`
-8. Run `redis-server`
+  * Homepage URL: http://localhost:5000
+  * Authorization Callback URL: http://localhost:5000
+5. On the confirmation screen, copy the `Client ID` and `Client Secret` to
+  `.env`. Note the setup script copies `.sample.env` to `.env` for you, if the
+  file does not exist.
+6. Run `foreman start`. Foreman will start the web server, `redis-server`, and
+   the resque background job queue.
 
 Testing
 -----------
