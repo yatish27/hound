@@ -21,10 +21,38 @@ Set Up Hound on Your Local Development Environment
   * Homepage URL: http://localhost:5000
   * Authorization Callback URL: http://localhost:5000
 5. On the confirmation screen, copy the `Client ID` and `Client Secret` to
-  `.env`. Note the setup script copies `.sample.env` to `.env` for you, if the
-  file does not exist.
-6. Run `foreman start`. Foreman will start the web server, `redis-server`, and
+   `.env`. Note the setup script copies `.sample.env` to `.env` for you, if the
+   file does not exist.
+6. Generate the [Stripe tokens] and copy them into your `.env` file. Put the
+   'Test Secret Key' as the value for `STRIPE_API_KEY` and 'Test Publishable
+   Key' as the value for `STRIPE_PUBLIC_KEY`.
+7. Run `foreman start`. Foreman will start the web server, `redis-server`, and
    the resque background job queue.
+
+[Stripe tokens]: https://manage.stripe.com/account/apikeys
+
+#### Stripe
+
+To test Stripe payments on staging use this fake credit card number.
+
+<table>
+  <thead>
+    <tr>
+      <th>Card</th>
+      <th>Number</th>
+      <th>Expiration</th>
+      <th>CVV</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Visa</td>
+      <td>4242424242424242</td>
+      <td>Any future date</td>
+      <td>Any 3 digits</td>
+    </tr>
+  </tbody>
+</table>
 
 Testing
 -----------
