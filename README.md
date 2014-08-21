@@ -9,27 +9,27 @@ Take care of pesky code reviews with a trusty [Hound](http://houndci.com).
 Hound reviews GitHub pull requests for style guide violations. [View the style
 guide &rarr;](https://github.com/thoughtbot/guides/tree/master/style)
 
-Development
------------
+Set Up Hound Locally for Development
+------------------------------------
 
-1. Rename `.sample.env` to `.env`
-2. Log into GitHub and go to the Application Settings under Account settings:
-   https://github.com/settings/applications
+1. After cloning the repo, run the setup script `./bin/setup`
+2. Log into your GitHub account and go to the [Application Settings under Account
+   settings](https://github.com/settings/applications).
 3. Under the Developer Applications panel - Click on "Register new application"
 4. Fill in the application details:
   * Application Name: Hound Development
-  * Homepage URL: http://localhost:5000
-  * Authorization Callback URL: http://localhost:5000
-4. After the Hound Dev app, a screen with a `Client ID` and `Client Secret`
-   token should appear.
-5. Add the `Client ID` and `Client Secret` to `.env`
+  * Homepage URL: http://localhost:3000
+  * Authorization Callback URL: http://localhost:3000
+5. After registering the Hound Dev application, a screen with a `Client ID` and
+   `Client Secret` token should appear.
+6. Add the `Client ID` and `Client Secret` to `.env`. Note the setup script
+   copies `.sample.env` to `.env` for you, if the file does not exist.
 
  ```bash
   GITHUB_CLIENT_ID=#client_id_token_here
   GITHUB_CLIENT_SECRET=#client_secret_token_here
  ```
 
-6. Run the setup script `./bin/setup`
 7. Run `foreman start`
 8. Run `redis-server`
 
