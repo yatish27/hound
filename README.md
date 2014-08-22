@@ -25,7 +25,7 @@ Set Up Hound on Your Local Development Environment
    file does not exist.
 6. Generate the [Stripe tokens] and copy them into your `.env` file. Put the
    'Test Secret Key' as the value for `STRIPE_API_KEY` and 'Test Publishable
-   Key' as the value for `STRIPE_PUBLIC_KEY`.
+   Key' as the value for `STRIPE_PUBLISHABLE_KEY`.
 7. Run `foreman start`. Foreman will start the web server, `redis-server`, and
    the resque background job queue.
 
