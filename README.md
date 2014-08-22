@@ -31,6 +31,13 @@ Set Up Hound on Your Local Development Environment
 
 [Stripe tokens]: https://manage.stripe.com/account/apikeys
 
+Testing
+-----------
+
+1. Set up your `development` environment as per above.
+2. Run `rake db:test:prepare`.
+3. Run `rake` to execute the full test suite.
+
 #### Stripe
 
 To test Stripe payments on staging use this fake credit card number.
@@ -53,13 +60,6 @@ To test Stripe payments on staging use this fake credit card number.
     </tr>
   </tbody>
 </table>
-
-Testing
------------
-
-1. Set up your `development` environment as per above.
-2. Run `rake db:test:prepare`.
-3. Run `rake` to execute the full test suite.
 
 Contributing
 ------------
