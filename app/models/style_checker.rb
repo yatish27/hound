@@ -2,6 +2,15 @@
 # Builds style guide based on file extension.
 # Delegates to style guide for line violations.
 class StyleChecker
+  class FileViolation < Struct.new(:filename, :line_violations)
+  end
+
+  class LineViolation < Struct.new(:line, :messages)
+    def line_number
+      line.line_number
+    end
+  end
+
   def initialize(modified_files, custom_config = nil)
     @modified_files = modified_files
     @custom_config = custom_config || "{}"
